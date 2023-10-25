@@ -1,0 +1,6 @@
+.venv
+
+.env
+.mysql_history
+
+docs
