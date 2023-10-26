@@ -1,5 +1,0 @@
-pytest
-pymysql
-cryptography
-python-dotenv
-prettytable
