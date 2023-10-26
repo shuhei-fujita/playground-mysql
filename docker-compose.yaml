@@ -10,3 +10,17 @@ services:
     volumes:
       - .my.cnf:/etc/mysql/my.cnf
       - ~/.mysql_history:/root/.mysql_history
+
+  fastapi:
+    build: ./api
+    ports:
+      - "8000:8000"
+
+  # web:
+  #   image: tiangolo/uvicorn-gunicorn-fastapi:python3.10
+  #   platform: linux/arm64/v8
+  #   environment:
+  #     - MODULE_NAME=main
+  #     - VARIABLE_NAME=app
+  #   ports:
+  #     - "8000:80"
