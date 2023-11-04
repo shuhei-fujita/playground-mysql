@@ -13,7 +13,7 @@
 1. 仮想環境を有効にする
 
 ```bash
-cd ~/playground-mysql &&
+cd ~/git/sample/playground-mysql/db &&
     python3 -m venv .venv &&
     source .venv/bin/activate &&
     pip install -r requirements.txt
@@ -39,7 +39,7 @@ python ./test/clean_test_data.py
 
 実行すると、テーブル形式でテスト結果が表示されます
 ```bash
-(.venv) ~/playground-mysql $ python test/test_database.py
+(.venv) ~/playground-mysql $ python ./test/test_database.py
 Testing Results: Table Data
 +-----------------------------+------------+-----------+----------+--------+
 |          Test Case          |   Table    | Test Data |  Actual  | Result |

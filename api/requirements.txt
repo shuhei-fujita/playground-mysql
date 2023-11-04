@@ -1,6 +1,9 @@
 fastapi
+uvicorn
+
 mysqlclient
 databases
+aiomysql
 sqlalchemy
-uvicorn
+
 python-dotenv

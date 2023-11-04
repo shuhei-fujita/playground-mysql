@@ -5,11 +5,11 @@ from pydantic import BaseModel
 from sqlalchemy import create_engine, MetaData
 from dotenv import load_dotenv
 
-from src import user, product, brand, category, order, order_detail
+from src.api import user, product, brand, category, order, order_detail
 
 load_dotenv()
 
-app = FastAPI()
+app = FastAPI(docs_url='/docs')
 app.include_router(user.router, prefix="/v1/user", tags=["user"])
 app.include_router(product.router, prefix="/v1/product", tags=["product"])
 app.include_router(brand.router, prefix="/v1/brand", tags=["brand"])
