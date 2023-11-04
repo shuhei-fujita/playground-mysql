@@ -3,7 +3,7 @@ import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from dotenv import load_dotenv
-
+from src.database import connect_to_db, disconnect_from_db
 from src.api import user, product, brand, category, order, order_detail
 
 load_dotenv()
@@ -14,8 +14,8 @@ routers = [
     (product.router, "products"),
     (brand.router, "brands"),
     (category.router, "categorys"),
-    (order.router, "orders"),
-    (order_detail.router, "order_details"),
+    (order.router, "order"),
+    (order_detail.router, "order_detail"),
 ]
 for router, tag in routers:
     app.include_router(router, prefix="/v1", tags=[tag])
@@ -37,3 +37,11 @@ def read_item(item_id: int, query_param: str = None):
 @app.post("/items/")
 def create_item(item: Item):
     return item
+
+@app.on_event("startup")
+async def startup_event():
+    await connect_to_db()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await disconnect_from_db()
