@@ -34,14 +34,14 @@ open http://127.0.0.1:8000/redoc
 ex) GET /v1/sample
 ```bash
 curl -X 'GET' \
-  'http://127.0.0.1:8000/v1/user/users/' \
+  'http://127.0.0.1:8000/v1/users/' \
   -H 'accept: application/json'
 ```
 
 ex) POST /v1/sample
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:8000/v1/user/users/' \
+  'http://127.0.0.1:8000/v1/users/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,56 +1,37 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
-import sqlalchemy
 from src.database import database
-
-# SQLAlchemyのテーブルオブジェクトを定義
-metadata = sqlalchemy.MetaData()
-
-users = sqlalchemy.Table(
-    "users",
-    metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("username", sqlalchemy.String(50), unique=True, nullable=False),
-    sqlalchemy.Column("password_hash", sqlalchemy.String(255), nullable=False),
-    sqlalchemy.Column("email", sqlalchemy.String(50)),
-    sqlalchemy.Column("created_at", sqlalchemy.TIMESTAMP),
-    sqlalchemy.Column("updated_at", sqlalchemy.TIMESTAMP),
-)
 
 router = APIRouter()
 
 class User(BaseModel):
     id: Optional[int] = None
-    username: Optional[str] = None
+    username: str
+    password_hash: str
     email: Optional[str] = None
-    password_hash: Optional[str] = None
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
 
-@router.post("/users/")
-def create_user(user: User):
+@router.post("/users/", response_model=User)
+async def create_user(user: User):
+    query = """
+    INSERT INTO users(username, password_hash, email, created_at, updated_at)
+    VALUES (:username, :password_hash, :email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    """
+    values = {**user.dict()}
+    values.pop("id", None)  # IDは自動生成されるため、値を削除
+    try:
+        await database.execute(query=query, values=values)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
     return user
 
-@router.get("/users/{users_id}")
-def read_user(users_id: int, username: str = None, email: str = None):
-    return {"user_id": users_id, "username": username, "email": email}
-
-# @router.get("/users/", response_model=List[User])
-# def read_users():
-#     # 実際にはここでデータベースからすべてのユーザーを取得するロジックを実装します。
-#     # 以下はモックのレスポンスです。
-#     return [
-#         {"id": 1, "username": "user1", "email": "user1@example.com", "password_hash": "hash1"},
-#         {"id": 2, "username": "user2", "email": "user2@example.com", "password_hash": "hash2"}
-#     ]
-
-@router.get("/users/")
+@router.get("/users/", response_model=List[User])
 async def read_users():
-    query = "SELECT * FROM users"  # 適宜、実際のテーブル名に変更してください
+    query = "SELECT * FROM users"
     try:
-        await database.connect()
         users = await database.fetch_all(query)
         return users
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        await database.disconnect()

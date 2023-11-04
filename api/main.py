@@ -2,7 +2,6 @@ import os
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from sqlalchemy import create_engine, MetaData
 from dotenv import load_dotenv
 
 from src.api import user, product, brand, category, order, order_detail
@@ -10,12 +9,16 @@ from src.api import user, product, brand, category, order, order_detail
 load_dotenv()
 
 app = FastAPI(docs_url='/docs')
-app.include_router(user.router, prefix="/v1/user", tags=["user"])
-app.include_router(product.router, prefix="/v1/product", tags=["product"])
-app.include_router(brand.router, prefix="/v1/brand", tags=["brand"])
-app.include_router(category.router, prefix="/v1/category", tags=["category"])
-app.include_router(order.router, prefix="/v1/order", tags=["order"])
-app.include_router(order_detail.router, prefix="/v1/order_detail", tags=["order_detail"])
+routers = [
+    (user.router, "users"),
+    (product.router, "products"),
+    (brand.router, "brands"),
+    (category.router, "categorys"),
+    (order.router, "orders"),
+    (order_detail.router, "order_details"),
+]
+for router, tag in routers:
+    app.include_router(router, prefix="/v1", tags=[tag])
 
 class Item(BaseModel):
     id: int

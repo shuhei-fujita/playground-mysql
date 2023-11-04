@@ -1,4 +1,3 @@
-from fastapi import FastAPI
 from databases import Database
 import os
 from dotenv import load_dotenv
@@ -16,12 +15,8 @@ DATABASE_URL = f"mysql://{os.getenv('MYSQL_USER')}:" \
 database = Database(DATABASE_URL)
 print(DATABASE_URL)
 
-app = FastAPI()
-
-@app.on_event("startup")
-async def startup():
+async def connect_to_db():
     await database.connect()
 
-@app.on_event("shutdown")
-async def shutdown():
+async def disconnect_from_db():
     await database.disconnect()
