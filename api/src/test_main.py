@@ -42,7 +42,7 @@ async def test_connect_database():
 async def test_read_users2():
     await connect_to_db()
     async with AsyncClient(app=app, base_url="http://test") as ac:
-        response = await ac.get("/users/")
+        response = await ac.get("/users")
     await disconnect_from_db()
     print(response)
     print(response.status_code)
