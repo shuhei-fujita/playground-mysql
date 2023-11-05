@@ -1,16 +1,25 @@
 import os
+import sys
 
 import pymysql
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# .env ファイルから接続情報を取得
-MYSQL_HOST = os.getenv("MYSQL_HOST")
-MYSQL_USER = os.getenv("MYSQL_USER")
-MYSQL_PORT = int(os.getenv("MYSQL_PORT"))
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
-MYSQL_DB_NAME = os.getenv("MYSQL_DB_NAME")
+
+def get_env_variable(name):
+    value = os.getenv(name)
+    if value is None:
+        print(f"環境変数 {name} が設定されていません。", file=sys.stderr)
+        sys.exit(1)
+    return value
+
+
+MYSQL_HOST = get_env_variable("MYSQL_HOST")
+MYSQL_USER = get_env_variable("MYSQL_USER")
+MYSQL_PORT = int(get_env_variable("MYSQL_PORT"))
+MYSQL_PASSWORD = get_env_variable("MYSQL_PASSWORD")
+MYSQL_DB_NAME = get_env_variable("MYSQL_DB_NAME")
 
 
 def execute_single_statement(statement, cursor):
