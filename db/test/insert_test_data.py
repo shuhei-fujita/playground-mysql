@@ -1,15 +1,17 @@
-import pymysql
 import os
+
+import pymysql
 from dotenv import load_dotenv
 
 load_dotenv()
 
 # .env ファイルから接続情報を取得
-MYSQL_HOST = os.getenv('MYSQL_HOST')
-MYSQL_USER = os.getenv('MYSQL_USER')
-MYSQL_PORT = int(os.getenv('MYSQL_PORT'))
-MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
-MYSQL_DB_NAME = os.getenv('MYSQL_DB_NAME')
+MYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQL_USER")
+MYSQL_PORT = int(os.getenv("MYSQL_PORT"))
+MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
+MYSQL_DB_NAME = os.getenv("MYSQL_DB_NAME")
+
 
 def execute_single_statement(statement, cursor):
     if not statement.strip():
@@ -19,20 +21,24 @@ def execute_single_statement(statement, cursor):
     except pymysql.MySQLError as e:
         print(f"エラーが発生しました: {e}")
 
+
 def execute_sql_from_file(filename, cursor):
-    with open(filename, 'r') as file:
-        sql_statements = file.read().split(';')
+    with open(filename, "r") as file:
+        sql_statements = file.read().split(";")
     for statement in sql_statements:
         execute_single_statement(statement, cursor)
 
+
 def create_shoes_ec_db():
     # connection = pymysql.connect(host=MYSQL_HOST, user=MYSQL_USER)
-    connection = pymysql.connect(host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASSWORD, port=MYSQL_PORT)
+    connection = pymysql.connect(
+        host=MYSQL_HOST, user=MYSQL_USER, password=MYSQL_PASSWORD, port=MYSQL_PORT
+    )
     cursor = connection.cursor()
 
     # データベースを作成
     cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(MYSQL_DB_NAME))
-    
+
     # 新しく作成したデータベースに接続
     cursor.execute("USE {}".format(MYSQL_DB_NAME))
 
@@ -43,7 +49,7 @@ def create_shoes_ec_db():
         "../ddl/categories.sql",
         "../ddl/products.sql",
         "../ddl/orders.sql",
-        "../ddl/order_details.sql"
+        "../ddl/order_details.sql",
     ]
     for ddl_file in ddl_files:
         execute_sql_from_file(os.path.join("ddl", ddl_file), cursor)
@@ -54,7 +60,7 @@ def create_shoes_ec_db():
         "../dml/brands.sql",
         "../dml/products.sql",
         "../dml/orders.sql",
-        "../dml/order_details.sql"
+        "../dml/order_details.sql",
     ]
     for dml_file in dml_files:
         execute_sql_from_file(os.path.join("dml", dml_file), cursor)
@@ -63,7 +69,7 @@ def create_shoes_ec_db():
     index_files = [
         "../index/users_index.sql",
         "../index/orders_index.sql",
-        "../index/products_index.sql"
+        "../index/products_index.sql",
     ]
     for index_file in index_files:
         execute_sql_from_file(os.path.join("index", index_file), cursor)
@@ -72,6 +78,7 @@ def create_shoes_ec_db():
     connection.commit()
     cursor.close()
     connection.close()
+
 
 if __name__ == "__main__":
     create_shoes_ec_db()

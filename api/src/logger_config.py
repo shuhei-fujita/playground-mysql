@@ -1,11 +1,12 @@
 # logger_config.py
-import os
 import logging
+import os
 from logging.handlers import RotatingFileHandler
+
 
 # loggerの設定関数
 def get_logger():
-    if 'logger' not in globals():
+    if "logger" not in globals():
         logger = logging.getLogger("uvicorn")
         os.makedirs("logs", exist_ok=True)
 
@@ -15,5 +16,5 @@ def get_logger():
         logger.addHandler(handler)
         logger.setLevel(logging.INFO)
         logger.setLevel(logging.ERROR)
-    
+
     return logger
