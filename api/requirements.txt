@@ -1,9 +1,10 @@
 fastapi
 uvicorn
-
 mysqlclient
 databases
 aiomysql
 sqlalchemy
-
 python-dotenv
+httpx
+pytest
+pytest-asyncio
