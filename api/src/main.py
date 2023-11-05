@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
-from src.api import brand, category, order, order_detail, product, user
+from src.api import brand, category, order, order_detail, product, user, auth
 from src.database import connect_to_db, disconnect_from_db
 from src.logger_config import get_logger
 
@@ -23,6 +23,7 @@ routers = [
     (category.router, "categorys"),
     (order.router, "order"),
     (order_detail.router, "order_detail"),
+    (auth.router, "auth"),
 ]
 for router, tag in routers:
     app.include_router(router, prefix="/v1", tags=[tag])
