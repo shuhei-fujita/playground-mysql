@@ -4,13 +4,9 @@ from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Path
 from pydantic import BaseModel
 from src.database import database
-import logging
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
 
 class Product(BaseModel):
     id: Optional[int] = None
@@ -22,6 +18,7 @@ class Product(BaseModel):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
+
 @router.get("/products/", response_model=List[Product])
 async def read_products():
     query = "SELECT * FROM products"
@@ -31,8 +28,11 @@ async def read_products():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @router.get("/products/{id}", response_model=Product)
-async def read_product(id: int = Path(..., description="The ID of the product to get.")):
+async def read_product(
+    id: int = Path(..., description="The ID of the product to get.")
+):
     query = "SELECT * FROM products WHERE id = :id"
     try:
         product = await database.fetch_one(query, values={"id": id})
@@ -40,8 +40,8 @@ async def read_product(id: int = Path(..., description="The ID of the product to
             return product
         raise HTTPException(status_code=404, detail="Product not found")
     except Exception as e:
-        logger.info(f"Attempting to delete product with id: {id}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.post("/products/", response_model=Product)
 async def create_product(product: Product):
@@ -61,8 +61,8 @@ async def create_product(product: Product):
         }
         return created_product
     except Exception as e:
-        logger.info(f"Attempting to delete product with id: {id}")
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @router.put("/products/{id}", response_model=Product)
 async def update_product(id: int, product: Product):
@@ -78,6 +78,7 @@ async def update_product(id: int, product: Product):
         return await read_product(id)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @router.delete("/products/{id}", response_model=Product)
 async def delete_product(id: int):
