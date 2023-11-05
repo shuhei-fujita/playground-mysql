@@ -10,13 +10,13 @@ FastAPIを使ったWebAPIのサンプルです。
 cd ~/git/sample/playground-mysql/api &&
     python3 -m venv .venv &&
     source .venv/bin/activate &&
-    pip install -r requirements.txt
+    poetry install
 ```
 
 uvicornでローカルサーバーを起動する
 
 ```bash
-uvicorn main:app --reload
+uvicorn src.main:app --reload
 ```
 
 Swagger UI or ReDocを開く

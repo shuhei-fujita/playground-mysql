@@ -1,0 +1,79 @@
+[tool.poetry]
+name = "playground-mysql"
+version = "1.0.0"
+description = ""
+authors = ["shuhei fujita"]
+
+[tool.poetry.dependencies]
+python = "3.10.5"
+pytest = "*"
+pymysql = "*"
+cryptography = "*"
+prettytable = "*"
+fastapi = "*"
+uvicorn = "*"
+mysqlclient = "*"
+databases = "*"
+aiomysql = "*"
+python-dotenv = "*"
+httpx = "*"
+pytest-asyncio = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+black = "*"
+isort = "*"
+mypy = "*"
+pyproject-flake8 = "*"
+types-pymysql = "*"
+
+[tool.flake8]
+max-line-length = 88
+exclude = '''
+/(
+    \\.git
+  | \\.tox
+  | __pycache__
+  | .*?\\.egg-info
+  | .venv
+  | .venv/.*
+  | old
+  | .mypy_cache
+)/
+'''
+
+[tool.black]
+line-length = 88
+include = '.py'
+exclude = '''
+/(
+    \\.git
+  | \\.tox
+  | __pycache__
+  | .*?\\.egg-info
+  | .venv
+  | .venv/.*
+  | old
+  | .mypy_cache
+)/
+'''
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+known_third_party = ["pytest","pymysql","cryptography","prettytable","fastapi","uvicorn","mysqlclient","databases","aiomysql","sqlalchemy","python_dotenv","httpx","pytest_asyncio"]
+
+[tool.mypy]
+include = '.py'
+exclude = '''
+/(
+    \\.git
+  | \\.tox
+  | __pycache__
+  | .*?\\.egg-info
+  | .venv
+  | .venv/.*
+  | old
+  | .mypy_cache
+)/
+'''

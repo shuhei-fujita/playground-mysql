@@ -1,11 +1,13 @@
 from datetime import datetime
+from typing import List, Optional
+
 from fastapi import APIRouter, HTTPException, Path, Request
 from pydantic import BaseModel
-from typing import List, Optional
 from src.database import database
 from src.logger_config import get_logger
 
 router = APIRouter()
+
 
 class User(BaseModel):
     id: Optional[int] = None
@@ -14,6 +16,7 @@ class User(BaseModel):
     email: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+
 
 @router.get("/users/", response_model=List[User])
 async def read_users():
@@ -25,6 +28,7 @@ async def read_users():
         print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @router.get("/users/{id}", response_model=User)
 async def read_user(id: int = Path(..., description="The ID of the user to get.")):
     query = "SELECT * FROM users WHERE id = :id"
@@ -35,6 +39,7 @@ async def read_user(id: int = Path(..., description="The ID of the user to get."
         raise HTTPException(status_code=404, detail="User not found")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # ユーザーが id を送信しないようにして、データベースがそれを自動で割り当てることを確認します。
 # values 辞書から id キーを削除します（もしそれが存在している場合）。
@@ -48,12 +53,18 @@ async def create_user(user: User):
     values = {**user.dict(exclude_unset=True), "created_at": now, "updated_at": now}
     try:
         user_id = await database.execute(query=query, values=values)
-        created_user = {**user.dict(), "id": user_id, "created_at": now, "updated_at": now}
+        created_user = {
+            **user.dict(),
+            "id": user_id,
+            "created_at": now,
+            "updated_at": now,
+        }
         return created_user
     except Exception as e:
         logger = get_logger()
         logger.error(f"Error creating user: {e}", exc_info=True)
         raise HTTPException(status_code=400, detail=str(e))
+
 
 # exclude_unset=True を使用して、デフォルト値がセットされていないフィールドを除外し、exclude={"created_at", "id"} でこれら2つのフィールドを明示的に更新データから除外しています。
 # これにより、created_at は更新クエリに含まれず、エラーを回避することができます。
@@ -73,6 +84,7 @@ async def update_user(id: int, user: User):
         return await read_user(id)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @router.delete("/users/{id}", response_model=User)
 async def delete_user(id: int):
