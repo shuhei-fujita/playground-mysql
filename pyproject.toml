@@ -18,6 +18,9 @@ aiomysql = "*"
 python-dotenv = "*"
 httpx = "*"
 pytest-asyncio = "*"
+python-jose = "*"
+passlib = "*"
+bcrypt = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
