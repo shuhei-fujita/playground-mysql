@@ -15,7 +15,6 @@ uvicorn = "*"
 mysqlclient = "*"
 databases = "*"
 aiomysql = "*"
-sqlalchemy = "*"
 python-dotenv = "*"
 httpx = "*"
 pytest-asyncio = "*"
@@ -26,6 +25,7 @@ black = "*"
 isort = "*"
 mypy = "*"
 pyproject-flake8 = "*"
+types-pymysql = "*"
 
 [tool.flake8]
 max-line-length = 88

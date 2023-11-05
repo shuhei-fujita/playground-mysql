@@ -28,13 +28,6 @@ for router, tag in routers:
     app.include_router(router, prefix="/v1", tags=[tag])
 
 
-class Item(BaseModel):
-    id: int
-    name: str
-    description: str = None
-    price: float
-
-
 @app.get("/")
 def read_root():
     return {"msg": "Hello World"}
