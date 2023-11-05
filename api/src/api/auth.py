@@ -20,13 +20,13 @@ async def sign_up(user: User):
     return {"message": "ユーザーが作成されました"}
 
 
-@router.post("/signin")
+@router.get("/signin")
 async def sign_in(user: User):
     # ログイン処理とJWTトークンの発行を実装します
     return {"message": "ログインしました"}
 
 
-@router.get("/authz")
+@router.post("/authz")
 def read_auth():
     return {"msg": "Hello World"}
 
