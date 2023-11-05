@@ -19,7 +19,7 @@ class Product(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-@router.get("/products/", response_model=List[Product])
+@router.get("/products", response_model=List[Product])
 async def read_products():
     query = "SELECT * FROM products"
     try:
@@ -43,7 +43,7 @@ async def read_product(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/products/", response_model=Product)
+@router.post("/products", response_model=Product)
 async def create_product(product: Product):
     now = datetime.utcnow().isoformat()
     query = """

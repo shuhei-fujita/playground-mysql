@@ -18,7 +18,7 @@ class User(BaseModel):
     updated_at: Optional[datetime] = None
 
 
-@router.get("/users/", response_model=List[User])
+@router.get("/users", response_model=List[User])
 async def read_users():
     query = "SELECT * FROM users"
     try:
@@ -43,7 +43,7 @@ async def read_user(id: int = Path(..., description="The ID of the user to get."
 
 # ユーザーが id を送信しないようにして、データベースがそれを自動で割り当てることを確認します。
 # values 辞書から id キーを削除します（もしそれが存在している場合）。
-@router.post("/users/", response_model=User)
+@router.post("/users", response_model=User)
 async def create_user(user: User):
     now = datetime.utcnow().isoformat()
     query = """
