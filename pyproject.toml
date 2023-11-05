@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "playground-mysql"
+version = "1.0.0"
+description = ""
+authors = ["shuhei fujita"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest = "*"
+pymysql = "*"
+cryptography = "*"
+prettytable = "*"
+fastapi = "*"
+uvicorn = "*"
+mysqlclient = "*"
+databases = "*"
+aiomysql = "*"
+sqlalchemy = "*"
+python-dotenv = "*"
+httpx = "*"
+pytest-asyncio = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
