@@ -8,13 +8,26 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - .my.cnf:/etc/mysql/my.cnf
+      # - .my.cnf:/etc/mysql/my.cnf
+      - mysql_data:/var/lib/mysql
       - ~/.mysql_history:/root/.mysql_history
 
   fastapi:
     build: ./api
     ports:
       - "8000:8000"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+
+volumes:
+  mysql_data: {}
 
   # web:
   #   image: tiangolo/uvicorn-gunicorn-fastapi:python3.10

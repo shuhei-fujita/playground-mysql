@@ -4,4 +4,6 @@
 .mysql_history
 .my.cnf
 
-todo*
+docs
+logs
+.pytest_cache
